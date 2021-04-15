@@ -12,14 +12,14 @@ const task2 = (A1, A2, A3, B1, B2, B3) => {
 
 const task3 = (ticket) => {
 	const ticketArr = ticket.toString().split('');
-	const arr = new Array(6).fill('0');
-	arr.forEach((item, index) => {
-		arr[index] = ticketArr[index] || '0';
+	const nullArr = new Array(6).fill('0');
+	nullArr.forEach((item, index) => {
+		nullArr[index] = ticketArr[index] || '0';
 	});
-	const firstSum = arr.slice(0, 3).reduce((acc, item) => acc + Number(item), 0);
-	const secondSum = arr.slice(3, 6).reduce((acc, item) => acc + Number(item), 0);
+	const firstSum = nullArr.slice(0, 3).reduce((acc, item) => acc + Number(item), 0);
+	const secondSum = nullArr.slice(3, 6).reduce((acc, item) => acc + Number(item), 0);
 	if (firstSum === secondSum) return 'YES';
 	return 'NO';
 };
 
-// console.log(task3(123321));
+//console.log(task3(123321));
