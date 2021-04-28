@@ -1,5 +1,5 @@
 export default class Model {
-	URL_TEMPLATE = `http://api.openweathermap.org/data/2.5/weather?q={{city}}&appid=3f0564f4ed80e38c01a55dded9b8f820`;
+	URL_TEMPLATE = `https://api.openweathermap.org/data/2.5/weather?q={{city}}&appid=3f0564f4ed80e38c01a55dded9b8f820`;
 
 	constructor(displayWeather) {
 		this.displayWeather = displayWeather;
