@@ -1,0 +1,24 @@
+.categories-list > .list-item {
+	text-decoration: none;
+	color: #212529;
+	display: block;
+	cursor: pointer;
+	transition: 100ms;
+}
+
+.categories-list > .list-item:hover {
+	transform: scale(1.15);
+}
+
+.categories-list > .list-item:not(:first-child) {
+	margin: 1rem 0;
+}
+
+#cartModal .list-group-item {
+	display: flex;
+	justify-content: space-between;
+}
+
+#cartModal .list-group-item i:hover {
+	cursor: pointer;
+}
