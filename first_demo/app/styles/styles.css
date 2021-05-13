@@ -3,11 +3,11 @@
 	color: #212529;
 	display: block;
 	cursor: pointer;
-	transition: 100ms;
+	transition: 150ms;
 }
 
 .categories-list > .list-item:hover {
-	transform: scale(1.15);
+	transform: scale(1.15) translate(10%, 5%);
 }
 
 .categories-list > .list-item:not(:first-child) {
@@ -21,4 +21,14 @@
 
 #cartModal .list-group-item i:hover {
 	cursor: pointer;
+}
+
+.gallery-item {
+	width: 18rem;
+}
+
+.gallery-item .item-info {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
