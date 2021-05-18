@@ -1,9 +1,13 @@
+import Publisher from './helpers/publisher.js';
+import ControllerCart from './cart/controllerCart.js';
 import ControllerGallery from './gallery/controllerGallery.js';
-import ControllerItem from './galleryItem/controllerItem.js';
+import ControllerHeader from './header/controllerHeader.js';
+import ControlelrSide from './side-menu/controllerSide.js';
 
-//console.log(document.querySelector('#galleryCardTemplate').innerHTML);
+const gallery = new ControllerGallery(Publisher);
 
-const item = new ControllerItem();
+const header = new ControllerHeader(Publisher);
 
-const gallery = new ControllerGallery();
-gallery.load();
+const cart = new ControllerCart(Publisher);
+
+const side = new ControlelrSide(Publisher);
