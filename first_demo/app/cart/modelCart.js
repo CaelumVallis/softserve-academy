@@ -2,6 +2,8 @@ export default class ModelCart {
   #state = {
     orders: [],
   };
+  #botToken = '1804031549:AAHJxCIcVxk2PgS-aKG1coQ4B-cXQrAGBHY';
+  #chatId = '-552650591';
 
   addToCart = (el) => {
     const order = { ...el, quantity: 1 };
@@ -39,9 +41,35 @@ export default class ModelCart {
     this.deleteFromCart(idToDelete);
   };
 
-  makeOrder = (order) => {
-    console.log(order);
+  makeOrder = ({ customer, order }) => {
+    const storage = JSON.parse(this.getLocalStorage('orders')) || [];
+    this.setLocalStorage('orders', JSON.stringify([...storage, order]));
+
+    const minInfoStr = order
+      .map((item, i) => {
+        return `${i + 1}) name: ${item.PRODUCT_NAME}, quantity: ${item.quantity}, id: ${item.ID}`;
+      })
+      .join('\n');
+
+    const orderString = `Customer: ${customer.name} ${customer.phone} ${
+      customer.email
+    }\n\n${minInfoStr}\n\n<b>ID: ${Date.now()}</b>`;
+
+    fetch(
+      `https://api.telegram.org/bot${this.#botToken}/sendMessage?chat_id=${
+        this.#chatId
+      }&parse_mode=html&text=${encodeURIComponent(orderString)}`
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   getItems = () => this.#state.orders;
+
+  getLocalStorage = (key) => localStorage.getItem(key);
+  setLocalStorage = (key, value) => localStorage.setItem(key, value);
 }

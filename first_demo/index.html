@@ -60,7 +60,7 @@
             <div class="input-group p-1">
               <input data-info="name" type="text" class="form-control customer-data" placeholder="Имя" />
               <input data-info="phone" type="text" class="form-control customer-data" placeholder="Телефон" />
-              <input data-info="e-mail" type="text" class="form-control customer-data" placeholder="e-mail" />
+              <input data-info="email" type="text" class="form-control customer-data" placeholder="e-mail" />
             </div>
             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Ещё нет</button>
             <button type="button" id="makeOrderBtn" class="btn btn-success">Все ок</button>
@@ -76,7 +76,7 @@
             <h5 class="modal-title" id="exampleModalLabel">История заказов</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body" id="ordersHistoryModalBody">...</div>
         </div>
       </div>
     </div>
@@ -199,6 +199,17 @@
       	  <span class="visually-hidden">Loading...</span>
       	</div>
         </div>
+    </script>
+
+    <script type="text/template" id="cartItemTemplate">
+      <li class="list-group-item order-item" data-id="{{ID}}">
+        <span>{{NAME}}</span>
+        <span>
+        <i data-action="decrease" class="bi bi-chevron-left change-quantity-btn"></i>{{quantity}}<i data-action="increase" class="bi bi-chevron-right change-quantity-btn"></i>
+        </span>
+        <span>{{PRICE}}₴</span>
+        <span><i class="bi bi-trash delete-btn"></i></span>
+        </li>
     </script>
 
     <script

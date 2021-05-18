@@ -1,17 +1,10 @@
 export default class ViewCart {
-  #itemTemplate = `<li class="list-group-item order-item" data-id="{{ID}}">
-  <span>{{NAME}}</span>
-  <span>
-  <i data-action="decrease" class="bi bi-chevron-left change-quantity-btn"></i>{{quantity}}<i data-action="increase" class="bi bi-chevron-right change-quantity-btn"></i>
-  </span>
-  <span>{{PRICE}}₴</span>
-  <span><i class="bi bi-trash delete-btn"></i></span>
-  </li>`;
-
   constructor(handleDeleteBtnClick, handleActionBtnClick, handleMakeOrderBtnClick) {
     this.cartModal = document.querySelector('#orderList');
     this.makeOrderBtn = document.querySelector('#makeOrderBtn');
     this.customerInfoInputs = document.querySelectorAll('.customer-data');
+    this.ordersHistoryContainer = document.querySelector('#ordersHistoryModalBody');
+    this.itemTemplate = document.querySelector('#cartItemTemplate').innerHTML;
 
     this.makeOrderBtn.addEventListener('click', () => this.onMakeOrderBtnClick());
 
@@ -23,7 +16,7 @@ export default class ViewCart {
   renderCart = (arr) => {
     this.cartModal.innerHTML = arr
       .map((item) => {
-        return this.#itemTemplate
+        return this.itemTemplate
           .replace('{{ID}}', item.ID)
           .replace('{{NAME}}', item.PRODUCT_NAME)
           .replace('{{quantity}}', item.quantity)
@@ -51,5 +44,17 @@ export default class ViewCart {
       orderInfo[item.dataset.info] = item.value;
     });
     this.handleMakeOrderBtnClick(orderInfo);
+  };
+
+  renderOrdersHistory = (arr) => {
+    this.ordersHistoryContainer.innerHTML = arr
+      .map((el, elIndex) => {
+        return `<h5>№${elIndex + 1}</h5>${el
+          .map((item) => {
+            return `<p>${item.PRODUCT_NAME} x${item.quantity}</p>`;
+          })
+          .join('')}`;
+      })
+      .join('');
   };
 }

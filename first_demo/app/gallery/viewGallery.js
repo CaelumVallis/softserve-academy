@@ -30,16 +30,18 @@ export default class ViewGallery {
     if (!Array.isArray(itemsArr)) {
       itemsArr = [itemsArr];
     }
-    this.galleryContent.innerHTML = itemsArr.map((item) => {
-      return this.cardTemplate
-        .replace('{{IMG_LINK}}', item.IMG_LINK)
-        .replace('{{PRODUCT_NAME}}', item.PRODUCT_NAME)
-        .replace('{{CATEGORY}}', item.CATEGORY)
-        .replace('{{AMOUNT}}', item.AMOUNT)
-        .replace('{{MANUFACTURE}}', item.MANUFACTURE)
-        .replace('{{ID}}', item.ID)
-        .replace('{{PRICE}}', `${item.PRICE}₴`);
-    });
+    this.galleryContent.innerHTML = itemsArr
+      .map((item) => {
+        return this.cardTemplate
+          .replace('{{IMG_LINK}}', item.IMG_LINK)
+          .replace('{{PRODUCT_NAME}}', item.PRODUCT_NAME)
+          .replace('{{CATEGORY}}', item.CATEGORY)
+          .replace('{{AMOUNT}}', item.AMOUNT)
+          .replace('{{MANUFACTURE}}', item.MANUFACTURE)
+          .replace('{{ID}}', item.ID)
+          .replace('{{PRICE}}', `${item.PRICE}₴`);
+      })
+      .join('');
 
     this.addBtn = document.querySelectorAll('.add-btn');
     this.infoBtn = document.querySelector('.info-btn');

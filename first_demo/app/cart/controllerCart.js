@@ -7,7 +7,12 @@ export default class ControllerCart {
     this.view = new ViewCart(this.handleDeleteBtnClick, this.handleActionBtnClick, this.handleMakeOrderBtnClick);
 
     Publisher.subscribe('ADD_TO_CART', this.handleAddToCart);
+    this.load();
   }
+
+  load = () => {
+    this.view.renderOrdersHistory(JSON.parse(this.model.getLocalStorage('orders')));
+  };
 
   handleAddToCart = (item) => {
     this.model.addToCart(item);
@@ -26,5 +31,10 @@ export default class ControllerCart {
 
   handleMakeOrderBtnClick = (orderInfo) => {
     this.model.makeOrder({ customer: orderInfo, order: this.model.getItems() });
+    this.updateOrdersHistory();
+  };
+
+  updateOrdersHistory = () => {
+    this.view.renderOrdersHistory(JSON.parse(this.model.getLocalStorage('orders')));
   };
 }
