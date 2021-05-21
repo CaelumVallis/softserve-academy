@@ -4,7 +4,7 @@ export default class ControllerModal {
   constructor(Publisher) {
     this.view = new ViewModal();
 
-    Publisher.subscribe('UPDATE_PRODUCTS', this.init);
+    Publisher.subscribe('ITEMS_RENDER', this.init);
   }
 
   init = () => {

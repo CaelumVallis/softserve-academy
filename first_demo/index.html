@@ -20,17 +20,18 @@
       <div class="container-lg">
         <a class="navbar-brand">FFFUUUD</a>
         <button
+          id="burgerBtn"
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
+          data-bs-target="#burgerMenu"
+          aria-controls="burgerMenu"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <div class="collapse navbar-collapse justify-content-end" id="burgerMenu">
           <div class="navbar-nav">
             <a class="nav-link mx-2" href="#" id="toggleCartBtn" data-bs-toggle="modal" data-bs-target="#cartModal"
               ><i class="bi bi-cart4"></i> Корзина</a
@@ -211,18 +212,18 @@
     </script>
 
     <script type="text/template" id="cartItemTemplate">
-      <li class="list-group-item order-item" data-id="{{ID}}">
-        <span>{{NAME}}</span>
-        <span>
+      <li class="list-group-item order-item d-flex" data-id="{{ID}}">
+        <span class="col-4">{{NAME}}</span>
+        <span class="col-4">
         <i data-action="decrease" class="bi bi-chevron-left change-quantity-btn"></i>{{quantity}}<i data-action="increase" class="bi bi-chevron-right change-quantity-btn"></i>
         </span>
-        <span>{{PRICE}}₴</span>
-        <span><i class="bi bi-trash delete-btn"></i></span>
+        <span class="col-3">{{PRICE}}₴</span>
+        <span class="col-1"><i class="bi bi-trash delete-btn"></i></span>
         </li>
     </script>
 
     <script type="text/template" id="itemInfoTemplate">
-      <img src="{{IMG_LINK}}" alt="{{PRODUCT_NAME}}">
+      <img style="width: 100%" src="{{IMG_LINK}}" alt="{{PRODUCT_NAME}}">
       <h3>{{PRODUCT_NAME}}</h3>
       <h6>{{CATEGORY}} // {{AMOUNT}}</h6>
       <h5>Manufacture: </h5><span>{{MANUFACTURE}}</span>

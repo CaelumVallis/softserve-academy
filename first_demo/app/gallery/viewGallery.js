@@ -4,7 +4,8 @@ export default class ViewGallery {
     handleSortSelectorClick,
     handlePageBtnClick,
     handleAddBtnClick,
-    handleInfoBtnClick
+    handleInfoBtnClick,
+    handleItemsRender
   ) {
     this.cardTemplate = document.querySelector('#galleryCardTemplate').innerHTML;
     this.spinnerTemplate = document.querySelector('#loadingSpinner').innerHTML;
@@ -32,6 +33,7 @@ export default class ViewGallery {
     this.handleSortSelectorClick = handleSortSelectorClick;
     this.handleAddBtnClick = handleAddBtnClick;
     this.handleInfoBtnClick = handleInfoBtnClick;
+    this.handleItemsRender = handleItemsRender;
   }
 
   showSpinner = () => {
@@ -41,6 +43,10 @@ export default class ViewGallery {
   renderItems = (itemsArr) => {
     if (!Array.isArray(itemsArr)) {
       itemsArr = [itemsArr];
+    }
+    if (itemsArr.length === 0) {
+      this.galleryContent.innerHTML = `<h3>Not found :/</h3>`;
+      return;
     }
     this.galleryContent.innerHTML = itemsArr
       .map((item) => {
@@ -54,6 +60,8 @@ export default class ViewGallery {
           .replace('{{PRICE}}', `${item.PRICE}₴`);
       })
       .join('');
+
+    this.handleItemsRender();
 
     this.addBtn = document.querySelectorAll('.add-btn');
     this.infoBtn = document.querySelectorAll('.info-btn');
@@ -112,6 +120,7 @@ export default class ViewGallery {
 
   onSortSelectorClick = (e) => {
     this.handleSortSelectorClick(e);
+    this.onSortAccordionClick();
   };
 
   onSortAccordionClick = () => {

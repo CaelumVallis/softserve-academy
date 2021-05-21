@@ -10,7 +10,8 @@ export default class ControllerGallery {
       this.handleSortSelectorClick,
       this.handlePageBtnClick,
       this.handleAddBtnClick,
-      this.handleInfoBtnClick
+      this.handleInfoBtnClick,
+      this.handleItemsRender
     );
 
     this.publisher.subscribe('CHANGE_CATEGORY', this.handleCategoryChange);
@@ -29,6 +30,10 @@ export default class ControllerGallery {
     });
   };
 
+  handleItemsRender = () => {
+    this.publisher.notify('ITEMS_RENDER');
+  };
+
   handleAddBtnClick = (id) => {
     this.publisher.notify('ADD_TO_CART', this.model.searchItem(id, 'id'));
   };
@@ -42,18 +47,21 @@ export default class ControllerGallery {
     if (currentPage > totalPages) {
       this.model.navigateTo(totalPages);
     }
-    this.view.renderItems(this.model.cropToPage(this.model.getItems()));
+
+    this.view.renderItems(this.model.cropToPage(this.model.getCurrentItems()));
     this.view.renderPagesTabs(this.model.getPages());
   };
 
   handleSortSelectorClick = (e) => {
     this.model.sortItems(e.target.dataset.option);
-    this.view.renderItems(this.model.cropToPage(this.model.getItems()));
+    this.view.renderItems(this.model.cropToPage(this.model.getCurrentItems()));
   };
 
   handleCategoryChange = (category) => {
     this.model.navigateTo(1);
-    this.view.renderItems(this.model.cropToPage(this.model.getItems(category)));
+    this.model.setCurrentItems(this.model.getItems(category));
+    this.view.renderPagesTabs(this.model.getPages());
+    this.view.renderItems(this.model.cropToPage(this.model.getCurrentItems()));
   };
 
   handleSearch = (value) => {
@@ -62,8 +70,7 @@ export default class ControllerGallery {
 
   handlePageBtnClick = (e) => {
     this.model.navigateTo(e.target.textContent);
-    console.log('pagebtn');
-    this.view.renderItems(this.model.cropToPage(this.model.getItems()));
+    this.view.renderItems(this.model.cropToPage(this.model.getCurrentItems()));
   };
 
   handleInfoBtnClick = (id) => {

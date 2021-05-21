@@ -8,6 +8,7 @@ export default class ModelGallery {
     data: [],
     itemsOnPage: 25,
     currentPage: 1,
+    currentData: [],
   };
 
   getItems = (category) => {
@@ -17,7 +18,9 @@ export default class ModelGallery {
     return this.#state.data;
   };
 
-  getPages = () => this.#state.data.length / this.#state.itemsOnPage;
+  getCurrentItems = () => this.#state.currentData;
+
+  getPages = () => this.#state.currentData.length / this.#state.itemsOnPage;
 
   getCurrentPage = () => this.#state.currentPage;
 
@@ -26,8 +29,8 @@ export default class ModelGallery {
       return this.cropToPage(this.#state.data);
     }
     if (type === 'string') {
-      return this.#state.data.find((item) => {
-        return item.PRODUCT_NAME.includes(value.toUpperCase());
+      return this.#state.data.filter((item) => {
+        return item.PRODUCT_NAME.includes(value.toUpperCase()) || item.MANUFACTURE.includes(value);
       });
     }
     if (type === 'id') {
@@ -41,12 +44,18 @@ export default class ModelGallery {
     this.#state.itemsOnPage = count;
   };
 
+  setCurrentItems = (data) => {
+    this.#state.currentData = data;
+  };
+
   sortItems = (option) => {
     if (option === 'ascending') {
       this.#state.data.sort((a, b) => +a.PRICE - b.PRICE);
+      this.#state.currentData.sort((a, b) => +a.PRICE - b.PRICE);
     }
     if (option === 'descending') {
       this.#state.data.sort((a, b) => +b.PRICE - a.PRICE);
+      this.#state.currentData.sort((a, b) => +b.PRICE - a.PRICE);
     }
   };
 
@@ -76,9 +85,6 @@ export default class ModelGallery {
     return fetch(this.#URL)
       .then((r) => r.json())
       .then((d) => {
-        //зачем тут getPages()?
-        //this.getPages();
-        // return this.parseData(d);
         console.log('fetch');
         this.parseData(d);
       });
@@ -131,7 +137,7 @@ export default class ModelGallery {
       })
       .map((item) => Object.assign({}, ...item));
 
-    // return this.cropToPage(this.#state.data);
+    this.setCurrentItems(this.#state.data);
   }
 
   cropToPage = (arr) => {

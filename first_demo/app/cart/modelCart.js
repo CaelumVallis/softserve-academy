@@ -76,6 +76,9 @@ export default class ModelCart {
         if (data.ok) {
           this.handleStatusMessage([data.ok, `Ваш заказ №${orderId} успешно принят!`]);
         }
+        if (!data.ok) {
+          console.log(data);
+        }
       });
   };
 

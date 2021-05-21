@@ -15,8 +15,10 @@ export default class ViewCart {
   }
 
   renderCart = (arr) => {
+    let totalPrice = 0;
     this.cartModal.innerHTML = arr
       .map((item) => {
+        totalPrice += +item.PRICE;
         return this.itemTemplate
           .replace('{{ID}}', item.ID)
           .replace('{{NAME}}', item.PRODUCT_NAME)
