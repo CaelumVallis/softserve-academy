@@ -1,7 +1,7 @@
 import ModelSide from './modelSide.js';
 import ViewSide from './viewSide.js';
 
-export default class ControlelrSide {
+export default class ControllerSide {
   constructor(Publisher) {
     this.model = new ModelSide();
     this.view = new ViewSide(this.handleCategoryChange, this.handleCategoriesRendered);

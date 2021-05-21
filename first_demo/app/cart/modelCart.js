@@ -5,6 +5,10 @@ export default class ModelCart {
   #botToken = '1804031549:AAHJxCIcVxk2PgS-aKG1coQ4B-cXQrAGBHY';
   #chatId = '-552650591';
 
+  constructor(handleStatusMessage) {
+    this.handleStatusMessage = handleStatusMessage;
+  }
+
   addToCart = (el) => {
     const order = { ...el, quantity: 1 };
 
@@ -42,6 +46,12 @@ export default class ModelCart {
   };
 
   makeOrder = ({ customer, order }) => {
+    const validation = this.validate(customer, order);
+    if (!validation.status) {
+      this.handleStatusMessage([validation.status, validation.error]);
+      return;
+    }
+
     const storage = JSON.parse(this.getLocalStorage('orders')) || [];
     this.setLocalStorage('orders', JSON.stringify([...storage, order]));
 
@@ -51,9 +61,8 @@ export default class ModelCart {
       })
       .join('\n');
 
-    const orderString = `Customer: ${customer.name} ${customer.phone} ${
-      customer.email
-    }\n\n${minInfoStr}\n\n<b>ID: ${Date.now()}</b>`;
+    const orderId = Date.now();
+    const orderString = `Customer: ${customer.name} ${customer.phone} ${customer.email}\n\n${minInfoStr}\n\n<b>ID: ${orderId}</b>`;
 
     fetch(
       `https://api.telegram.org/bot${this.#botToken}/sendMessage?chat_id=${
@@ -64,8 +73,26 @@ export default class ModelCart {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        if (data.ok) {
+          this.handleStatusMessage([data.ok, `Ваш заказ №${orderId} успешно принят!`]);
+        }
       });
+  };
+
+  validate = (customerInfo, order) => {
+    const regexName = /^[a-zA-Z ]{2,30}$/;
+    const regexPhone =
+      /^(?:\+38)?(?:\(0[0-9][0-9]\)[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|044[ .-]?[0-9]{3}[ .-]?[0-9]{2}[ .-]?[0-9]{2}|0[0-9][0-9][0-9]{7})$/gm;
+    const regexEmail =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (order.length === 0) return { status: false, error: 'Корзина пуста' };
+    if (!regexName.test(String(customerInfo.name)))
+      return { status: false, error: 'Введите имя длиной от 2 до 30 символов' };
+    if (!regexPhone.test(String(customerInfo.phone)))
+      return { status: false, error: 'Введите корректный номер телефона' };
+    if (!regexEmail.test(String(customerInfo.email).toLowerCase()))
+      return { status: false, error: 'Введите корректный e-mail' };
+    return { status: true };
   };
 
   getItems = () => this.#state.orders;

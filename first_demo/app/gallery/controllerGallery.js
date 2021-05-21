@@ -9,17 +9,22 @@ export default class ControllerGallery {
       this.handleCounterBtnClick,
       this.handleSortSelectorClick,
       this.handlePageBtnClick,
-      this.handleAddBtnClick
+      this.handleAddBtnClick,
+      this.handleInfoBtnClick
     );
 
     this.publisher.subscribe('CHANGE_CATEGORY', this.handleCategoryChange);
     this.publisher.subscribe('SEARCH_ITEM', this.handleSearch);
 
+    //************
     this.load();
   }
 
   load = () => {
+    //************
     this.view.showSpinner();
+
+    //fetchData() -> parseData() -> cropToPage()
 
     return this.model.fetchData().then((r) => {
       this.view.renderItems(r);
@@ -34,6 +39,7 @@ export default class ControllerGallery {
 
   handleCounterBtnClick = (e) => {
     this.model.setItemsCount(e.target.dataset.count);
+    //************
     this.load();
     this.view.renderPagesTabs(this.model.getPages());
   };
@@ -53,6 +59,11 @@ export default class ControllerGallery {
 
   handlePageBtnClick = (e) => {
     this.model.navigateTo(e.target.textContent);
+    //************
     this.load();
+  };
+
+  handleInfoBtnClick = (id) => {
+    this.view.renderItemInfo(this.model.searchItem(id, 'id'));
   };
 }

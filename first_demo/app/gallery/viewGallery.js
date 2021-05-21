@@ -1,12 +1,23 @@
 export default class ViewGallery {
-  constructor(handleCounterBtnClick, handleSortSelectorClick, handlePageBtnClick, handleAddBtnClick) {
+  constructor(
+    handleCounterBtnClick,
+    handleSortSelectorClick,
+    handlePageBtnClick,
+    handleAddBtnClick,
+    handleInfoBtnClick
+  ) {
     this.cardTemplate = document.querySelector('#galleryCardTemplate').innerHTML;
     this.spinnerTemplate = document.querySelector('#loadingSpinner').innerHTML;
+    this.itemInfoTemplate = document.querySelector('#itemInfoTemplate').innerHTML;
     this.galleryContent = document.querySelector('#galleryContent');
     this.itemCountBtns = document.querySelectorAll('.items-count-btn');
     this.sortSelectorBtns = document.querySelectorAll('.sort-selector');
     this.pagesContainer = document.querySelector('#pagesContainer');
     this.infoModal = document.querySelector('#itemInfoModal .modal-body');
+    this.accordionSort = document.querySelector('#accordionSort');
+    this.accordionSortBtn = document.querySelector('#accordionSortBtn');
+
+    this.accordionSortBtn.addEventListener('click', () => this.onSortAccordionClick());
 
     this.itemCountBtns.forEach((item) => {
       item.addEventListener('click', (e) => this.onCounterBtnClick(e));
@@ -20,6 +31,7 @@ export default class ViewGallery {
     this.handleCounterBtnClick = handleCounterBtnClick;
     this.handleSortSelectorClick = handleSortSelectorClick;
     this.handleAddBtnClick = handleAddBtnClick;
+    this.handleInfoBtnClick = handleInfoBtnClick;
   }
 
   showSpinner = () => {
@@ -44,11 +56,13 @@ export default class ViewGallery {
       .join('');
 
     this.addBtn = document.querySelectorAll('.add-btn');
-    this.infoBtn = document.querySelector('.info-btn');
+    this.infoBtn = document.querySelectorAll('.info-btn');
     this.addBtn.forEach((item) => {
       item.addEventListener('click', (e) => this.onAddBtnClick(e));
     });
-    this.infoBtn.addEventListener('click', (e) => this.onInfoBtnClick(e));
+    this.infoBtn.forEach((item) => {
+      item.addEventListener('click', (e) => this.onInfoBtnClick(e));
+    });
   };
 
   renderPagesTabs = (number) => {
@@ -72,6 +86,14 @@ export default class ViewGallery {
     });
   };
 
+  renderItemInfo = (item) => {
+    let templateString = this.itemInfoTemplate;
+    for (const key in item) {
+      templateString = templateString.replaceAll(`{{${key}}}`, item[key]);
+    }
+    this.infoModal.innerHTML = templateString;
+  };
+
   onCounterBtnClick = (e) => {
     this.itemCountBtns.forEach((item) => item.classList.remove('active'));
     e.target.classList.add('active');
@@ -85,11 +107,16 @@ export default class ViewGallery {
 
   onInfoBtnClick = (e) => {
     const itemId = e.target.closest('.item-body').querySelector('.item-id').innerText;
-    this.infoModal.innerHTML = `<p>${itemId}</p>`;
+    this.handleInfoBtnClick(itemId);
   };
 
   onSortSelectorClick = (e) => {
     this.handleSortSelectorClick(e);
+  };
+
+  onSortAccordionClick = () => {
+    this.accordionSortBtn.classList.toggle('show');
+    this.accordionSort.classList.toggle('show');
   };
 
   onPageBtnClick = (e) => {

@@ -1,6 +1,10 @@
 export default class ViewSide {
   constructor(handleCategoryChange, handleCategoriesRender) {
     this.categoriesList = document.querySelector('.categories-list');
+    this.accordionCategoriesBtn = document.querySelector('#accordionCategoriesBtn');
+    this.accordionCategories = document.querySelector('#accordionCategories');
+
+    this.accordionCategoriesBtn.addEventListener('click', () => this.onAccordionClick());
 
     this.handleCategoryChange = handleCategoryChange;
     this.handleCategoriesRender = handleCategoriesRender;
@@ -24,5 +28,10 @@ export default class ViewSide {
       item.addEventListener('click', (e) => this.onCategorySelectorClick(e));
     });
     this.handleCategoriesRender();
+  };
+
+  onAccordionClick = () => {
+    this.accordionCategoriesBtn.classList.toggle('collapsed');
+    this.accordionCategories.classList.toggle('show');
   };
 }

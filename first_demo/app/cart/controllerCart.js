@@ -3,7 +3,7 @@ import ViewCart from './viewCart.js';
 
 export default class ControllerCart {
   constructor(Publisher) {
-    this.model = new ModelCart();
+    this.model = new ModelCart(this.handleStatusMessage);
     this.view = new ViewCart(this.handleDeleteBtnClick, this.handleActionBtnClick, this.handleMakeOrderBtnClick);
 
     Publisher.subscribe('ADD_TO_CART', this.handleAddToCart);
@@ -36,5 +36,9 @@ export default class ControllerCart {
 
   updateOrdersHistory = () => {
     this.view.renderOrdersHistory(JSON.parse(this.model.getLocalStorage('orders')));
+  };
+
+  handleStatusMessage = (msg) => {
+    this.view.renderValidationMessage(msg);
   };
 }

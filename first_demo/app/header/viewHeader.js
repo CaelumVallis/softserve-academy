@@ -1,9 +1,9 @@
 export default class ViewHeader {
   constructor(handleSearch) {
-    this.searchForm = document.querySelector("#searchForm");
-    this.searchInput = document.querySelector("#searchInput");
+    this.searchForm = document.querySelector('#searchForm');
+    this.searchInput = document.querySelector('#searchInput');
 
-    this.searchForm.addEventListener("submit", (e) => {
+    this.searchForm.addEventListener('submit', (e) => {
       e.preventDefault();
       this.onSearch();
     });

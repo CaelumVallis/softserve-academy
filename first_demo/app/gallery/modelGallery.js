@@ -76,17 +76,21 @@ export default class ModelGallery {
     return fetch(this.#URL)
       .then((r) => r.json())
       .then((d) => {
-        this.getPages();
-        return this.parseData(d.feed.entry, this.#columnsNumber);
+        //зачем тут getPages()?
+        //this.getPages();
+        return this.parseData(d);
       });
   };
 
-  parseData(arr, fromElement) {
+  parseData(d) {
+    const arr = d.feed.entry;
     const itemsArr = [];
+
+    //убирает колонки с названиями
     arr.splice(0, this.#columnsNumber);
 
     while (arr.length > 0) {
-      itemsArr.push(arr.splice(0, fromElement));
+      itemsArr.push(arr.splice(0, this.#columnsNumber));
     }
 
     this.#state.data = itemsArr

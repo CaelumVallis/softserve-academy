@@ -5,6 +5,7 @@ export default class ViewCart {
     this.customerInfoInputs = document.querySelectorAll('.customer-data');
     this.ordersHistoryContainer = document.querySelector('#ordersHistoryModalBody');
     this.itemTemplate = document.querySelector('#cartItemTemplate').innerHTML;
+    this.validationContainer = document.querySelector('#validationContainer');
 
     this.makeOrderBtn.addEventListener('click', () => this.onMakeOrderBtnClick());
 
@@ -47,6 +48,10 @@ export default class ViewCart {
   };
 
   renderOrdersHistory = (arr) => {
+    if (!arr) {
+      this.ordersHistoryContainer.innerHTML = '<h5>Пока нет заказов :|</h5>';
+      return;
+    }
     this.ordersHistoryContainer.innerHTML = arr
       .map((el, elIndex) => {
         return `<h5>№${elIndex + 1}</h5>${el
@@ -56,5 +61,11 @@ export default class ViewCart {
           .join('')}`;
       })
       .join('');
+  };
+
+  renderValidationMessage = (msg) => {
+    this.validationContainer.innerHTML = msg[0]
+      ? `<span class='text-success'>${msg[1]}</span>`
+      : `<span class='text-danger'>${msg[1]}</span>`;
   };
 }
