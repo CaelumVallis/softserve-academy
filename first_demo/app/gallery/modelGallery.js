@@ -12,14 +12,14 @@ export default class ModelGallery {
 
   getItems = (category) => {
     if (category) {
-      return this.cropToPage(this.#state.data).filter((item) => item.CATEGORY === category);
+      return this.#state.data.filter((item) => item.CATEGORY === category);
     }
-    return this.cropToPage(this.#state.data);
+    return this.#state.data;
   };
 
-  getPages = () => {
-    return this.#state.data.length / this.#state.itemsOnPage;
-  };
+  getPages = () => this.#state.data.length / this.#state.itemsOnPage;
+
+  getCurrentPage = () => this.#state.currentPage;
 
   searchItem = (value, type) => {
     if (value === '') {
@@ -78,7 +78,9 @@ export default class ModelGallery {
       .then((d) => {
         //зачем тут getPages()?
         //this.getPages();
-        return this.parseData(d);
+        // return this.parseData(d);
+        console.log('fetch');
+        this.parseData(d);
       });
   };
 
@@ -129,7 +131,7 @@ export default class ModelGallery {
       })
       .map((item) => Object.assign({}, ...item));
 
-    return this.cropToPage(this.#state.data);
+    // return this.cropToPage(this.#state.data);
   }
 
   cropToPage = (arr) => {

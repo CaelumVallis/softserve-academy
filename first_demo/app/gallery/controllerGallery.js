@@ -16,20 +16,16 @@ export default class ControllerGallery {
     this.publisher.subscribe('CHANGE_CATEGORY', this.handleCategoryChange);
     this.publisher.subscribe('SEARCH_ITEM', this.handleSearch);
 
-    //************
     this.load();
   }
 
   load = () => {
-    //************
     this.view.showSpinner();
 
-    //fetchData() -> parseData() -> cropToPage()
-
-    return this.model.fetchData().then((r) => {
-      this.view.renderItems(r);
+    return this.model.fetchData().then(() => {
+      this.view.renderItems(this.model.cropToPage(this.model.getItems()));
       this.view.renderPagesTabs(this.model.getPages());
-      this.publisher.notify('UPDATE_PRODUCTS', r);
+      this.publisher.notify('UPDATE_PRODUCTS', this.model.getItems());
     });
   };
 
@@ -39,18 +35,24 @@ export default class ControllerGallery {
 
   handleCounterBtnClick = (e) => {
     this.model.setItemsCount(e.target.dataset.count);
-    //************
-    this.load();
+
+    const currentPage = this.model.getCurrentPage();
+    const totalPages = this.model.getPages();
+
+    if (currentPage > totalPages) {
+      this.model.navigateTo(totalPages);
+    }
+    this.view.renderItems(this.model.cropToPage(this.model.getItems()));
     this.view.renderPagesTabs(this.model.getPages());
   };
 
   handleSortSelectorClick = (e) => {
     this.model.sortItems(e.target.dataset.option);
-    this.view.renderItems(this.model.getItems());
+    this.view.renderItems(this.model.cropToPage(this.model.getItems()));
   };
 
   handleCategoryChange = (category) => {
-    this.view.renderItems(this.model.getItems(category));
+    this.view.renderItems(this.model.cropToPage(this.model.getItems(category)));
   };
 
   handleSearch = (value) => {
@@ -59,8 +61,7 @@ export default class ControllerGallery {
 
   handlePageBtnClick = (e) => {
     this.model.navigateTo(e.target.textContent);
-    //************
-    this.load();
+    this.view.renderItems(this.model.cropToPage(this.model.getItems()));
   };
 
   handleInfoBtnClick = (id) => {
