@@ -52,6 +52,7 @@ export default class ControllerGallery {
   };
 
   handleCategoryChange = (category) => {
+    this.model.navigateTo(1);
     this.view.renderItems(this.model.cropToPage(this.model.getItems(category)));
   };
 
@@ -61,6 +62,7 @@ export default class ControllerGallery {
 
   handlePageBtnClick = (e) => {
     this.model.navigateTo(e.target.textContent);
+    console.log('pagebtn');
     this.view.renderItems(this.model.cropToPage(this.model.getItems()));
   };
 

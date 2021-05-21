@@ -11,14 +11,20 @@ export default class ViewSide {
   }
 
   onCategorySelectorClick = (e) => {
-    this.handleCategoryChange(e.target.textContent);
+    let category = e.target.textContent;
+    if (e.target.classList.contains('reset')) {
+      category = '';
+      this.onAccordionClick();
+    }
+    this.handleCategoryChange(category);
   };
 
   renderCategories = (categoriesArr) => {
     this.categoriesList.innerHTML = '';
     categoriesArr.forEach((item) => {
-      this.categoriesList.innerHTML += `<a class="list-item category-selector">${item}</a>`;
+      this.categoriesList.innerHTML += `<a href='#' class="list-item category-selector">${item}</a>`;
     });
+    this.categoriesList.innerHTML += `<a href='#' class="list-item reset category-selector">Сброс категорий</a>`;
     this.initializeCategoriesActions();
   };
 
