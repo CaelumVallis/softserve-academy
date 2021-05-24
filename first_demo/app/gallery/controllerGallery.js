@@ -66,6 +66,7 @@ export default class ControllerGallery {
 
   handleSearch = (value) => {
     this.view.renderItems(this.model.searchItem(value, 'string'));
+    this.view.renderPagesTabs(this.model.getPages());
   };
 
   handlePageBtnClick = (e) => {

@@ -51,7 +51,7 @@ export default class ViewCart {
 
   renderOrdersHistory = (arr) => {
     if (!arr) {
-      this.ordersHistoryContainer.innerHTML = '<h5>Пока нет заказов :|</h5>';
+      this.ordersHistoryContainer.innerHTML = '<h5>Пока нет заказов :/</h5>';
       return;
     }
     this.ordersHistoryContainer.innerHTML = arr
